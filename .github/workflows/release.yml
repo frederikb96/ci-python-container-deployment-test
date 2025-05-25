@@ -36,7 +36,5 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}
-          body: |
-            [Docker image](ghcr.io/${{ github.repository }}:${{ github.ref_name }})
           draft: false
           prerelease: false
