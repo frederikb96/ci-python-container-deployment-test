@@ -5,10 +5,9 @@ on:
     tags:
       - 'v*.*.*'
 
-# Grant the token rights to push packages
 permissions:
-  contents: write       # allow writing to the repository
-  packages: write       # allow writing to ghcr.io
+  contents: write    # for creating the Release
+  packages: write    # for pushing the image
 
 jobs:
   build-and-release:
@@ -29,18 +28,21 @@ jobs:
           context: ./app
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-          labels: |
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+
+      - name: Give GHCR a moment to index
+        run: |
+          echo "⏳ Waiting for GHCR to register the image..."
+          sleep 10
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}
           body: |
             Docker image:  
-            `ghcr.io/${{ github.repository }}:${{ github.ref_name }}`  
+            `ghcr.io/${{ github.repository }}:${{ github.ref_name }}`
           draft: false
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
