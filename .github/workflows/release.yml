@@ -42,3 +42,5 @@ jobs:
             `ghcr.io/${{ github.repository }}:${{ github.ref_name }}`  
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
