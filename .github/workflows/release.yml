@@ -29,11 +29,6 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
 
-      - name: Give GHCR a moment to index
-        run: |
-          echo "⏳ Waiting for GHCR to register the image..."
-          sleep 10
-
       - name: Create GitHub Release
         uses: actions/create-release@v1
         env:
@@ -42,7 +37,6 @@ jobs:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}
           body: |
-            Docker image:  
-            `ghcr.io/${{ github.repository }}:${{ github.ref_name }}`
+            [Docker image](ghcr.io/${{ github.repository }}:${{ github.ref_name }})
           draft: false
           prerelease: false
